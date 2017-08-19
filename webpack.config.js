@@ -1,9 +1,9 @@
  module.exports = {
     context: __dirname,
-    entry: "./index",
+    entry: "./src/index",
     output: {
-        path: __dirname,
-        filename: "webpack_index.js"
+        path: __dirname + "/public",
+        filename: "dist.js"
     },
     externals: {
 	  	jzz: 'JZZ'
