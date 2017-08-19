@@ -2,7 +2,7 @@
 var THREE = require("THREE");
 var Promise = require("Bluebird");
 
-var camera, scene, renderer, geometry, material, mesh;
+var camera, scene, renderer, geometry, material, mesh=[], i, j, k, targetVal, currentVal=1, targetVal1, currentVal1=1;
 
 document.addEventListener("DOMContentLoaded", function(event) {
     console.log("DOM fully loaded and parsed");
@@ -13,17 +13,32 @@ animate();
 
 function init() {
 
-    scene = new THREE.Scene();
+        scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
     camera.position.z = 500;
     scene.add(camera);
 
-    geometry = new THREE.CubeGeometry(200, 200, 200);
-    material = new THREE.MeshBasicMaterial();
+    function makeSphere(scale) {
+    	geometry = new THREE.SphereGeometry(100,2,2);
+    material = new THREE.MeshNormalMaterial();
 
-    mesh = window.mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+    m = new THREE.Mesh(geometry, material);
+    scene.add(m);
+    m.scale.setScalar(scale);
+    m.baseScale = m.scale.clone();
+    m.baseSpeed = scale;
+    mesh.push(m);
+    };
+    for(var ii=0; ii<45; ii++) {
+    	makeSphere(Math.random());
+    }
+
+    
+
+		i = 0;
+    j = 0;
+    k = 0;
 
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -41,14 +56,23 @@ function animate() {
 
 function render() {
 
-    mesh.rotation.x += 0.01;
-    mesh.rotation.y += 0.02;
+    currentVal = currentVal + ((targetVal || 1)  - currentVal)/2;
+    currentVal1 = currentVal1 + ((targetVal1 || 1)  - currentVal1)/2;
 
+		
+	mesh.forEach(function(m){
 
-    var scale = window.mesh.scale.x;
-    var newVal = scale + ((window.scaleTarget || 1)  - scale)/2;
-    mesh.scale.setScalar(newVal);
-    material.color = new THREE.Color(newVal, newVal, newVal);
+     		    m.scale.x = (m.baseScale.x + currentVal1) % 1;
+    m.scale.y = (m.baseScale.y + currentVal1) % 1;
+    m.scale.z = (m.baseScale.z + currentVal1) % 1;
+		i=normalRandom();
+		j=normalRandom();
+		k=normalRandom();
+    m.rotation.x += Math.random()/1000+0.01;
+    m.rotation.y += Math.random()/1000+0.02;
+    m.rotation.z += Math.random()/1000+ 0.01;
+    m.position.set(box(m.position.x+5*i*currentVal), box(m.position.y+5*j*currentVal), box(m.position.z+5*k*currentVal));
+	});
 
     renderer.render(scene, camera);
 
@@ -57,7 +81,26 @@ function render() {
 JZZ().openMidiIn().or('MIDI-In:  Cannot open!')
      .and(function(){ console.log('MIDI-In: ', this.name()); })
      .connect(function(msg){console.log(msg.toString());
+     	if(msg[1]){
+     		targetVal1 = msg[1]/127;
+     	}
      	if(msg[2]){
-     		window.scaleTarget = msg[2]/127;
+     		targetVal = msg[2]/127;
      	}
      });
+
+function normalRandom() {
+var n=(Math.random()+Math.random()+Math.random()+Math.random()+Math.random())-2.5
+return n;
+}
+
+function box(num){
+if(num>200){
+num=200
+}
+else{
+if(num<-200){
+num=-200;
+}}
+return num;
+}
