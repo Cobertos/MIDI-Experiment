@@ -1,5 +1,5 @@
-var THREE = require("THREE");
-var Promise = require("Bluebird");
+import * as THREE from "three";
+import Promise from "bluebird";
 
 import { Visual } from "./Visual";
 

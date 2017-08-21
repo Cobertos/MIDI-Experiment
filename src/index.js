@@ -1,12 +1,12 @@
 
-var THREE = require("THREE");
-var Promise = require("Bluebird");
+import * as THREE from "three";
+import Promise from "bluebird";
 
-import { BallsVisual } from "./BallsVisual";
+import { BallsVisual } from "./visuals/BallsVisual";
+import { NullVisual } from "./visuals/NullVisual";
 
 const renderer = new THREE.WebGLRenderer();
-let visual = new BallsVisual();
-visual.init();
+let visual = new NullVisual();
 
 document.addEventListener("DOMContentLoaded", function(event) {
 	console.log("DOM fully loaded and parsed");
@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
 function init() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	window.document.body.appendChild(renderer.domElement);
+
+	setVisual(BallsVisual);
 }
 
 function setVisual(newVisual) {

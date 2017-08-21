@@ -1,3 +1,4 @@
+import * as THREE from "three";
 import Promise from "bluebird";
 
 export class Visual {
