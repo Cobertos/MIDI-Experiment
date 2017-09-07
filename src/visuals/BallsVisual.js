@@ -1,7 +1,9 @@
 import * as THREE from "three";
 import Promise from "bluebird";
+import $ from "jquery";
 
 import { Visual } from "./Visual";
+import { ManagedData } from "../ManagedData";
 
 var camera, scene, renderer, geometry, material, mesh=[], i=0, j=0, k=0, targetVal, currentVal=1, targetVal1, currentVal1=1;
 
@@ -40,6 +42,21 @@ export class BallsVisual extends Visual {
 			scene.add(m);
 			mesh.push(m);
 		}
+
+		//GUI
+		this.data = new ManagedData({
+			ballSize : { //MidiChannelOption
+				channel : 0
+			}
+		});
+
+		this.gui = this.data.gui();
+		$("body").append(this.gui.domElement);
+		$(this.gui.domElement).css("z-index", 20);
+	}
+
+	teardown() {
+
 	}
 
 	render(renderer) {

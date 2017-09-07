@@ -3,6 +3,7 @@
 	entry: "./src/index",
 	output: {
 		path: __dirname + "/public",
+		publicPath: "/public",
 		filename: "dist.js"
 	},
 	externals: {
@@ -19,6 +20,18 @@
 					plugins: ["transform-runtime"]
 				}
 			}
+		},{
+			test: /dat\.gui[\\/].+\.html$/,
+			use: {
+				loader: "text-loader"
+			}
+		},{
+			test: /dat\.gui[\\/].+\.scss$/,
+			use: [{
+				loader: "css-loader" // translates CSS into CommonJS
+			},{
+				loader: "sass-loader"
+			}]
 		}]
 	}
 };

@@ -5,6 +5,11 @@ import Promise from "bluebird";
 import { BallsVisual } from "./visuals/BallsVisual";
 import { NullVisual } from "./visuals/NullVisual";
 
+window.midium = {
+	BallsVisual,
+	NullVisual
+}
+
 const renderer = new THREE.WebGLRenderer();
 let visual = new NullVisual();
 
@@ -19,14 +24,15 @@ function init() {
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	window.document.body.appendChild(renderer.domElement);
 
-	setVisual(BallsVisual);
+	setVisual(new BallsVisual());
 }
 
 function setVisual(newVisual) {
 	let toTeardown = visual;
 	visual = { render : function(){} };
 	toTeardown.teardown(renderer, JZZ).then(()=>{
-		return newVisual.init(renderer, JZZ);
+		newVisual.init(renderer, JZZ);
+		return newVisual;
 	}).then((newVisual)=>{
 		visual = newVisual;
 	});
