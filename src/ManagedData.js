@@ -1,4 +1,3 @@
-import _ from "lodash";
 import dat from "dat.gui";
 
 /**Object that, using the provided get() and set() properties

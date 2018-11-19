@@ -1,4 +1,5 @@
  module.exports = {
+ 	mode: "development",
 	context: __dirname,
 	entry: "./src/index",
 	output: {
@@ -16,11 +17,24 @@
 			use: {
 				loader: 'babel-loader',
 				options: {
-					presets: ['env'],
-					plugins: ["transform-runtime"]
+					presets: [
+						['env', {
+							"targets": {
+								"browsers": [
+									"last 2 versions"
+								]
+							}
+						}]
+					],
+					plugins: [
+						["transform-runtime",{
+							"regenerator": true,
+						}]
+					],
+					cacheDirectory : true
 				}
 			}
-		},{
+		}/*,{
 			test: /dat\.gui[\\/].+\.html$/,
 			use: {
 				loader: "text-loader"
@@ -32,6 +46,6 @@
 			},{
 				loader: "sass-loader"
 			}]
-		}]
+		}*/]
 	}
 };

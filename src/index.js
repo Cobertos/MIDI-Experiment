@@ -1,47 +1,28 @@
-
 import * as THREE from "three";
-import Promise from "bluebird";
 
-import { BallsVisual } from "./visuals/BallsVisual";
-import { NullVisual } from "./visuals/NullVisual";
-
-window.midium = {
-	BallsVisual,
-	NullVisual
-}
+import { CubeHighlightMoverVisual } from "./visuals/CubeHighlightMoverVisual";
 
 const renderer = new THREE.WebGLRenderer();
-let visual = new NullVisual();
+const visual = new CubeHighlightMoverVisual();
 
-document.addEventListener("DOMContentLoaded", function(event) {
-	console.log("DOM fully loaded and parsed");
-	init();
-	requestAnimationFrame(renderLoop);
-});
-
-
-function init() {
+const refreshRendererSize = ()=>{
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	window.document.body.appendChild(renderer.domElement);
+};
 
-	setVisual(new BallsVisual());
-}
+document.addEventListener("DOMContentLoaded", function(event) {
+	refreshRendererSize();
+	window.addEventListener("resize", refreshRendererSize);
 
-function setVisual(newVisual) {
-	let toTeardown = visual;
-	visual = { render : function(){} };
-	toTeardown.teardown(renderer, JZZ).then(()=>{
-		newVisual.init(renderer, JZZ);
-		return newVisual;
-	}).then((newVisual)=>{
-		visual = newVisual;
-	});
-}
-
-function renderLoop() {
-	requestAnimationFrame(renderLoop);
-	visual.render(renderer);
-}
+	console.log("=== VISUAL INIT ===")
+	visual.init(renderer, JZZ);
+	console.log("=== VISUAL RENDER ===");
+	const loop = ()=>{
+		requestAnimationFrame(loop);
+		visual.render(renderer);
+	};
+	requestAnimationFrame(loop);
+});
 
 JZZ().openMidiIn().or('MIDI-In:  Cannot open!')
 	 .and(function(){ console.log('MIDI-In: ', this.name()); })
