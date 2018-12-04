@@ -3,6 +3,8 @@
 
 An experiment in having visualizations being MIDI and sound controlled from the hosts computer and MIDI devices connected to it.
 
+![cube visuals gif](./cubeVisualGif.gif)
+
 ### Usage
 
 Normal users can check out [The MIDI Experiment Firebase App](https://midi-experiment.firebaseapp.com/) for a semi-latest version of the application
