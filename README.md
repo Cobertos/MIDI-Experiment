@@ -5,17 +5,13 @@ An experiment in having visualizations being MIDI and sound controlled from the 
 
 ![cube visuals gif](./cubeVisualGif.gif)
 
-### Usage
+### Setup / Usage
 
+1. Install [`npm`](https://nodejs.org/en/download/) (comes with node).
+2. Clone this repository
+3. Run `npm install`
+4. Run `node_modules\.bin\webpack-dev-server` (hosts the server on your `localhost:8080`)
+5. Run `node_modules\.bin\gulp` (build + file watching)
+
+OUT OF DATE:
 Normal users can check out [The MIDI Experiment Firebase App](https://midi-experiment.firebaseapp.com/) for a semi-latest version of the application
-
-### Development
-
-Prerequisites, you need [NPM (bundled with Node.js)](https://nodejs.org/en/download/)
-
-For Windows:
-
-1. Download the git repo (or clone it)
-2. Run `npm install`
-3. Run `node_modules\.bin\webpack-dev-server`
-4. Navigate to `localhost:8080` to see the test webpage.
