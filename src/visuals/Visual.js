@@ -1,7 +1,6 @@
 import * as THREE from "three";
 
-export class Visual {
-	constructor() {}
+export class Visual extends THREE.Scene {
 
 	/**When run will init this visual using the given renderer and JZZ instance
 	 * @param {THREE.WebGLRenderer} webGLRenderer The WebGLRenderer

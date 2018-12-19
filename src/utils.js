@@ -27,3 +27,12 @@ export function _assert(condition, message="Assertion Error", error=Error) {
     throw new error(message);
   }
 }
+
+export function normalRandom() {
+  var n=(Math.random()+Math.random()+Math.random()+Math.random()+Math.random())-2.5;
+  return n;
+}
+
+export function randomRange(a,b) {
+  return Math.random()*(b-a)+a;
+}

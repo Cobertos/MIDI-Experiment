@@ -1,9 +1,10 @@
 import * as THREE from "three";
+window.THREE = THREE;
 
-import { CubeHighlightMoverVisual } from "./visuals/CubeHighlightMoverVisual";
+import { SpikyBallVisual } from "./visuals/SpikyBallVisual";
 
 const renderer = new THREE.WebGLRenderer();
-const visual = new CubeHighlightMoverVisual();
+const visual = window._debug_visual = new SpikyBallVisual();
 
 const refreshRendererSize = ()=>{
 	renderer.setSize(window.innerWidth, window.innerHeight);

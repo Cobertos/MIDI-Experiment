@@ -1,3 +1,7 @@
+//Keeps track of a "beat epoch" and a BPM, and calculates
+//beat times and other useful metrics for effects. Also
+//has the ability to create a function that will run
+//at musical intervals
 export class TapTool {
   constructor(bpm, key){
     this._bpm = bpm;
@@ -33,6 +37,14 @@ export class TapTool {
     return beats;
   }
 
+  /**Returns integer for a given fractional beat
+   * e.g., if you give a fraction of 0.25, it will return 4*this.beat
+   * (the integer of the current 16th note)
+   */
+  getFractionalBeat(frac=1) {
+    return this.beat * 1/frac;
+  }
+
   /**Returns the time of the last fractional beat
    * @param {Number} [frac=1] The last fractional beat to return (1 is the last measure, 0.5 is last half note, etc)
    * @param {Number} [offset=0] Offset from that beat by another fraction beat
@@ -58,5 +70,11 @@ export class TapTool {
         func();
       }
     };
+  }
+
+  /**Same as onceEvery but more readable
+   */
+  every(opts, func) {
+    this.onceEvery(opts.beat, opts.measure, func);
   }
 }
