@@ -80,11 +80,13 @@ export class SpikyBallVisual extends Visual {
     this._tapTool = new TapTool(100, "k");
     this._micTool = new MicTool(2048);
     this._visTool = new FFTVisualTool(this._micTool.bins);
-    this._visTool.dom.style.position = "absolute";
-    this._visTool.dom.style.left = 0;
-    this._visTool.dom.style.bottom = 0;
     this._stats = new Stats();
-    window.document.body.appendChild(this._visTool.dom);
+    this._visBox = document.createElement("div");
+    this._visBox.style.position = "absolute";
+    this._visBox.style.bottom = 0;
+    this._visBox.style.left = 0;
+    this._visBox.appendChild(this._visTool.dom);
+    window.document.body.appendChild(this._visBox);
     window.document.body.appendChild(this._stats.dom);
 
     const cam = this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -99,8 +101,8 @@ export class SpikyBallVisual extends Visual {
     let g = new THREE.SphereBufferGeometry(1,200,200);
     let m = new MeshSpikyObjectMaterial({
       color: 0xDDDDDD,
-      metalness: 1.0,
-      roughness: 0.0,
+      metalness: 0.7,
+      roughness: 0.3,
       emissive: new THREE.Color(1.0,0.0,0.0),
       //Random Spikes
       /*spikes: Array.apply(null, {length: 20})
@@ -152,36 +154,25 @@ export class SpikyBallVisual extends Visual {
 
     this._lastTime = Date.now();
 
-    this._seq1 = new SequencerTool(this._tapTool, 0.25, [
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      console.log,
-      undefined,
-      console.log,
-      undefined
-    ]);
-    this._seq2 = new SequencerTool(this._tapTool, 1, [
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      console.log,
-      undefined,
-      console.log,
-      undefined
+    this._seq1 = new SequencerTool(this._tapTool, 1, [
+      ()=>{ this.ms.material.shader.uniforms.spikeRadius.value = 1; },
+      ()=>{ this.ms.material.shader.uniforms.spikeRadius.value = 2; },
+      ()=>{ this.ms.material.shader.uniforms.spikeRadius.value = 4; },
+      ()=>{ this.ms.material.shader.uniforms.spikeRadius.value = 8; },
+      ()=>{ this.ms.material.shader.uniforms.spikeRadius.value = 12; },
+      ()=>{ this.ms.material.shader.uniforms.spikeRadius.value = 8; },
+      ()=>{ this.ms.material.shader.uniforms.spikeRadius.value = 4; },
+      ()=>{ this.ms.material.shader.uniforms.spikeRadius.value = 2; },
     ]);
     this._seq1Vis = new SequencerVisualTool(this._seq1);
-    this._seq1Vis.dom.style.position = "absolute";
-    this._seq1Vis.dom.style.left = 0;
-    this._seq1Vis.dom.style.bottom = 60+"px";
+    this._visBox.appendChild(this._seq1Vis.dom);
+
+    this._seq2 = new SequencerTool(this._tapTool, 1, [
+      ()=>{ this.ms.material.emissive = new THREE.Color(1.0,0.0,0.0); },
+      ()=>{ this.ms.material.emissive = new THREE.Color(1.0,1.0,1.0); },
+    ]);
     this._seq2Vis = new SequencerVisualTool(this._seq2);
-    this._seq2Vis.dom.style.position = "absolute";
-    this._seq2Vis.dom.style.left = 0;
-    this._seq2Vis.dom.style.bottom = 100+"px";
-    window.document.body.appendChild(this._seq1Vis.dom);
-    window.document.body.appendChild(this._seq2Vis.dom);
+    this._visBox.appendChild(this._seq2Vis.dom);
   }
 
   getCubeFromIndex(offsetv2) {
@@ -206,12 +197,11 @@ export class SpikyBallVisual extends Visual {
       this.ms.material.shader.uniforms.spikeNormals.value.forEach((v4,idx,arr)=>{
         v4.w = this._micTool.data[Math.floor(idx*this._micTool.bins/arr.length)]/256;
       });
+      this._seq1.update();
+      this._seq1Vis.update();
+      this._seq2.update();
+      this._seq2Vis.update();
     }
-
-    this._seq1.update();
-    this._seq2.update();
-    this._seq1Vis.update();
-    this._seq2Vis.update();
 
     renderer.render(this, this.camera);
     this._stats.end();

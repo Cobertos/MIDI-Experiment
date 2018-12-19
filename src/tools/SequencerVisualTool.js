@@ -24,7 +24,6 @@ export class SequencerVisualTool {
   }
 
   update() {
-    console.log(this._sequencer.currentTriggerIndex);
     for(var i=0; i<this._sequencer.lengthInTriggers; i++) {
       let node = this.dom.childNodes[i];
       if(i === this._sequencer.currentTriggerIndex) {
