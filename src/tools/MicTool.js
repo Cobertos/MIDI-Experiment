@@ -10,8 +10,37 @@ export class MicTool {
     this._asyncConstructor(samples);
   }
 
+  async requireUserInteraction() {
+    let btn = document.createElement("button");
+    btn.innerHTML = "Chrome requires user interaction to use audio for FFT. Click this or disable in chrome:// flags";
+    btn.style.width = "20%";
+    btn.style.height = "20%";
+    btn.style.position = "absolute";
+    btn.style.top = 0;
+    btn.style.left = 0;
+    document.body.appendChild(btn);
+
+    return new Promise((resolve, reject)=>{
+      btn.addEventListener("click", ()=>{
+        document.body.removeChild(btn);
+        resolve();
+      });
+    });
+  }
+
   async _asyncConstructor(samples){
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    //Chrome's new policy to require user interaction before doing anything
+    //WebAudio is kind of lame. At least it can be disabled (in chrome://flags)
+    //https://goo.gl/7K7WLu
+    if(audioCtx.state === "suspended") {
+      console.warn("Requires user ineraction! Disable it in chrome://flags");
+      this.requireUserInteraction()
+        .then(()=>{
+          console.log("Got user interaction");
+          return audioCtx.resume();
+        });
+    }
     const analyzer = this.analyzer = audioCtx.createAnalyser();
 
     try {
