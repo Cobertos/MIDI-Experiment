@@ -10,14 +10,20 @@ export class MicTool {
     this._asyncConstructor(samples);
   }
 
+  /**Displays a button on the screen the user must click
+   * and resolves when the button is clicked. Useful if
+   * it detects Chrome has suspended WebAudio until user
+   * interaction
+   */
   async requireUserInteraction() {
     let btn = document.createElement("button");
     btn.innerHTML = "Chrome requires user interaction to use audio for FFT. Click this or disable in chrome:// flags";
     btn.style.width = "20%";
     btn.style.height = "20%";
     btn.style.position = "absolute";
-    btn.style.top = 0;
-    btn.style.left = 0;
+    btn.style.top = "50%";
+    btn.style.left = "50%";
+    btn.style.transform = "translateX(-50%) translateZ(-50%)";
     document.body.appendChild(btn);
 
     return new Promise((resolve, reject)=>{

@@ -1,10 +1,10 @@
 import * as THREE from "three";
 window.THREE = THREE;
 
-import { SpikyBallVisual } from "./visuals/SpikyBallVisual";
+import { IndustrialVisual } from "./visuals/IndustrialVisual/IndustrialVisual";
 
 const renderer = new THREE.WebGLRenderer();
-const visual = window._debug_visual = new SpikyBallVisual();
+const visual = window._debug_visual = new IndustrialVisual();
 
 const refreshRendererSize = ()=>{
 	renderer.setSize(window.innerWidth, window.innerHeight);
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	window.addEventListener("resize", refreshRendererSize);
 
 	console.log("=== VISUAL INIT ===")
-	visual.init(renderer, JZZ);
+	visual.init(renderer);
 	console.log("=== VISUAL RENDER ===");
 	const loop = ()=>{
 		requestAnimationFrame(loop);
@@ -24,15 +24,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
 	};
 	requestAnimationFrame(loop);
 });
-
-JZZ().openMidiIn().or('MIDI-In:  Cannot open!')
-	 .and(function(){ console.log('MIDI-In: ', this.name()); })
-	 .connect(function(msg){console.log(msg.toString());
-		if(msg[1]){
-			targetVal1 = msg[1]/127;
-		}
-		if(msg[2]){
-			targetVal = msg[2]/127;
-		}
-	 });
 

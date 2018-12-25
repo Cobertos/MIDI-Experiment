@@ -10,6 +10,11 @@
 	externals: {
 		jzz: 'JZZ'
 	},
+	resolve: {
+        alias : {
+            "three-examples" : "three/examples/js"
+        }
+    },
 	module: {
 		rules: [{
 			test: /\.js$/,
@@ -34,7 +39,10 @@
 					cacheDirectory : true
 				}
 			}
-		}/*,{
+		},{
+            test : /(three[\\\/]examples[\\\/]js|(OBJLoader2|LoaderSupport)\.js$)/,
+            loader : "imports-loader?THREE=three"
+        }/*,{
 			test: /dat\.gui[\\/].+\.html$/,
 			use: {
 				loader: "text-loader"

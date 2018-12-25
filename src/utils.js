@@ -36,3 +36,9 @@ export function normalRandom() {
 export function randomRange(a,b) {
   return Math.random()*(b-a)+a;
 }
+
+//Actual modulus, instead of just remained (%).
+//handles negative number wrap around properly
+export function mod(f,m) {
+  return f - m * Math.floor(f / m);
+}
