@@ -1,4 +1,6 @@
- module.exports = {
+const webpack = require("webpack");
+
+module.exports = {
  	mode: "development",
 	context: __dirname,
 	entry: "./src/index",
@@ -55,5 +57,8 @@
 				loader: "sass-loader"
 			}]
 		}*/]
-	}
+	},
+	plugins: [
+		new webpack.HotModuleReplacementPlugin()
+	]
 };

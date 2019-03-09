@@ -1,10 +1,10 @@
 import * as THREE from "three";
 window.THREE = THREE;
 
-import { IndustrialVisual } from "./visuals/IndustrialVisual/IndustrialVisual";
+import { WorldVisual } from "./visuals/WorldVisual/WorldVisual";
 
 const renderer = new THREE.WebGLRenderer();
-const visual = window._debug_visual = new IndustrialVisual();
+const visual = window._debug_visual = new WorldVisual();
 
 const refreshRendererSize = ()=>{
 	renderer.setSize(window.innerWidth, window.innerHeight);
